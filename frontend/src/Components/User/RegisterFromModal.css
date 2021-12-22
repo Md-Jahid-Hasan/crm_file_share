@@ -1,0 +1,146 @@
+.form-register-section {
+    display: block;
+    margin: 0px auto;
+    width: 90%;
+}
+
+.form-register-section h1 {
+    font-size: 22px;
+    color: var(--DarkturquoiseDeep);
+    text-align: center;
+    padding-top: 15px;
+}
+
+.form-register-section-cross {
+    color: var(--Black-light);
+    margin: 5.9px 0 0 0;
+    margin-left: -100px;
+    float: right;
+    position: relative;
+    right: -0.7%;
+    top: -0.7%;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.form-register-section-cross:hover {
+    color: var(--DarkturquoiseDeep);
+}
+
+.form-register-section h4 {
+    font-size: 15px;
+    color: var(--Gray);
+    text-align: center;
+    font-weight: 500;
+}
+
+.input-block-password {
+    padding-bottom: 10px;
+}
+
+.form-register-section h4 span {
+    color: var(--Darkturquoise);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.form-register-section h4 span:hover {
+    color: var(--DarkturquoiseDeep);
+    text-decoration: none;
+}
+
+.form-register button {
+    color: var(--White);
+    background-color: var(--Darkturquoise);
+    cursor: pointer;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.form-register button:hover {
+    background-color: var(--DarkturquoiseDeep);
+}
+
+.form-register {
+    padding: 10px 0px 15px 0px;
+}
+
+.or {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    line-height: 0.1em;
+    margin: 25px auto;
+    width: 97%;
+    color: var(--Gray);
+    font-size: 13px;
+}
+
+.or span {
+    padding: 0 10px;
+    background-color: var(--White);
+    border-radius: 50px;
+}
+
+.form-register-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: var(--Gray);
+    margin: 10px 0px;
+}
+
+.form-register-footer p {
+    padding: 0px 3px;
+}
+
+.form-register-footer p:nth-last-child(1) {
+    color: var(--Darkturquoise);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.form-register-footer p:nth-last-child(1):hover {
+    color: var(--DarkturquoiseDeep);
+    text-decoration: none;
+}
+
+
+/* Mobile devices */
+
+@media (max-width: 320px) {
+    .form-register-section h4 {
+        font-size: 12px;
+    }
+}
+
+
+/* Mobile devices */
+
+@media (max-width: 480px) {
+    .form-register-section h4 {
+        font-size: 12px;
+    }
+}
+
+
+/*  iPads, Tablets devices */
+
+@media (max-width: 768px) {}
+
+
+/*  Small screens, laptops devices */
+
+@media (max-width: 1024px) {}
+
+
+/*  Desktops, large screens devices */
+
+@media (max-width: 1200px) {}

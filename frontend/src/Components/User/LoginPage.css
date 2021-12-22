@@ -1,0 +1,242 @@
+.login-section {
+    display: block;
+    margin: 30px auto;
+    padding: 15px;
+    width: 35%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 1rem 2rem hsl(0 0% 0% / 12%);
+    height: auto;
+}
+
+.login-section h1 {
+    font-size: 22px;
+    color: var(--DarkturquoiseDeep);
+    text-align: center;
+    padding-top: 15px;
+}
+
+.login-section h4 {
+    font-size: 15px;
+    color: var(--Gray);
+    text-align: center;
+    font-weight: 500;
+}
+
+.input-block {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #a1b4b4;
+}
+
+.input-block label {
+    color: var(--Black-light);
+}
+
+.input-block input,
+.input-block select {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding-right: 15px;
+    padding-left: 15px;
+    font-size: 16px;
+    line-height: 35px;
+    background: #eef9fe;
+    border: 1px solid #cddbef;
+    border-radius: 2px;
+    outline: none;
+    font-size: 14px;
+}
+
+.input-block select {
+    height: 2.5rem;
+}
+
+.input-block input:focus,
+.input-block select:focus {
+    border: 1px solid var(--Darkturquoise);
+}
+
+.input-block-password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.input-block-password span {
+    color: var(--DarkturquoiseDeep);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#eye {
+    color: var(--Black-light);
+    margin: 5.9px 0 0 0;
+    margin-left: -100px;
+    padding: 19px 20px 19px 0px;
+    float: right;
+    position: relative;
+    right: -0.7%;
+    top: -80%;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.eye-click {
+    color: var(--Darkturquoise) !important;
+}
+
+.form-login button {
+    color: var(--White);
+    background-color: var(--Darkturquoise);
+    cursor: pointer;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin: 0px 0px 20px 0px;
+}
+
+.form-login button:hover {
+    background-color: var(--DarkturquoiseDeep);
+}
+
+.form-login {
+    padding: 10px 0px 20px 0px;
+}
+
+.from-login-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: var(--Gray);
+    margin: 10px 0px;
+}
+
+.from-login-footer p {
+    padding: 0px 5px;
+}
+
+.from-login-footer p:nth-last-child(1) {
+    color: var(--Darkturquoise);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.from-login-footer p:nth-last-child(1):hover {
+    color: var(--DarkturquoiseDeep);
+}
+
+
+/* Modal Style */
+
+.forgot-password-modal,
+.register-from-modal {
+    width: 30%;
+    display: block;
+    margin: 60px auto;
+    height: auto;
+    background-color: var(--White);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none !important;
+    display: block;
+    z-index: 100;
+}
+
+.register-from-modal {
+    margin: 25px auto;
+    height: 95vh !important;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--Light-Gray) var(--Gray);
+    outline: none !important;
+}
+
+.register-from-modal::-webkit-scrollbar {
+    width: 3px;
+}
+
+.register-from-modal::-webkit-scrollbar-track {
+    background: var(--White);
+}
+
+.register-from-modal::-webkit-scrollbar-thumb {
+    background-color: var(--Light-Gray);
+    border-radius: 10px;
+}
+
+
+/* Mobile devices */
+
+@media (max-width: 320px) {
+    .login-section {
+        width: 80% !important;
+        height: auto;
+        margin: 10px auto;
+    }
+    .forgot-password-modal {
+        width: 90% !important;
+        margin-bottom: 50px;
+    }
+    .register-from-modal {
+        width: 90% !important;
+        height: auto;
+        margin: 10px auto;
+    }
+}
+
+
+/* Mobile devices */
+
+@media (max-width: 480px) {
+    .login-section {
+        width: 80% !important;
+        height: auto;
+        margin: 10px auto 60px auto;
+    }
+    .forgot-password-modal,
+    .register-from-modal {
+        width: 90% !important;
+        height: auto;
+    }
+}
+
+
+/*  iPads, Tablets devices */
+
+@media (max-width: 768px) {
+    .login-section {
+        width: 70%;
+    }
+    .forgot-password-modal,
+    .register-from-modal {
+        width: 70%;
+    }
+    .register-from-modal {
+        height: auto;
+    }
+}
+
+
+/*  Small screens, laptops devices */
+
+@media (max-width: 1024px) {
+    .forgot-password-modal,
+    .register-from-modal {
+        width: 70%;
+    }
+}
+
+
+/*  Desktops, large screens devices */
+
+@media (max-width: 1200px) {}
