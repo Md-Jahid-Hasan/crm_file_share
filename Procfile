@@ -1,1 +1,1 @@
-web: gunicorn FileSharingPlatform.wsgi
+web: gunicorn crm_file_project.wsgi
