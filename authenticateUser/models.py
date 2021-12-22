@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    disk_space = models.IntegerField()
+    disk_space = models.IntegerField(default=0)
     maximum_capacity = models.IntegerField(default=1000)
     objects = UserManager()
 
