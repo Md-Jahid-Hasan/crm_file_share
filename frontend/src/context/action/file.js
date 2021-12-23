@@ -51,12 +51,10 @@ export const uploadFile = (source=null, name, size=0, price, link=null) => {
     console.log(source, name, size, price, link)
     let config = getHeader()
     let body;
-    // if (source === null){
-    //     body = {name: name, price: price, other_link: link, size: size,}
-    // } else {
+
         if(size !== 0) {
             size = size / 1000
-            size.toFixed(2)
+            size = size.toFixed(2)
         }
         // Size measured in KB
         config['Content-Type'] = 'multipart/form-data'

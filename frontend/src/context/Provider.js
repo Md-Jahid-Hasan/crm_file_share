@@ -18,12 +18,12 @@ const GlobalProvider = ({children}) => {
     }
 
     useEffect(() => {
-
+        console.log(window.location.host)
         authDispatch({
             type: "LOADING_ON",
         })
         axios
-            .get("http://127.0.0.1:8000/api/auth/me/", getHeader())
+            .get(`http://${window.location.host}/api/auth/me/`, getHeader())
             .then(res => {
                 console.log(res)
                 authDispatch({

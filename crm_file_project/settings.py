@@ -57,7 +57,6 @@ MIDDLEWARE = [
 ]
 
 
-
 ROOT_URLCONF = 'crm_file_project.urls'
 
 TEMPLATES = [
