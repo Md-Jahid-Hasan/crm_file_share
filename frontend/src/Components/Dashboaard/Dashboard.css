@@ -1,0 +1,123 @@
+.dashboard-section {
+    display: block;
+    margin: 20px auto;
+    width: 70%;
+    border: 1px solid #cccc;
+}
+
+.dashboard-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.dashboard-div h3 {
+    text-align: center;
+    padding: 20px 0px;
+    font-size: 40px;
+}
+
+.dashboard-div button,
+.table td button {
+    color: var(--White);
+    background-color: var(--Darkturquoise);
+    cursor: pointer;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    width: 16%;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.table td button {
+    width: 100% !important;
+}
+
+.dashboard-div button:hover {
+    background-color: var(--DarkturquoiseDeep);
+}
+
+.dashboard-table {
+    padding: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table td,
+.table th {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+.table th {
+    background-color: #92c9e6;
+    color: #ffffff;
+}
+
+.table tbody tr td {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 10rem;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #d1e8f5;
+}
+
+.table thead th:nth-last-child(2) {
+    width: 10rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/*responsive*/
+
+@media (max-width: 500px) {
+    .dashboard-section {
+        display: block;
+        margin: 20px auto;
+        width: 100%;
+    }
+    .dashboard-div button {
+        width: 30%;
+    }
+    .table thead {
+        display: none;
+    }
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+        display: block;
+        width: 100% !important;
+    }
+    .table tr {
+        margin-bottom: 15px;
+    }
+    .table td {
+        padding-left: 30% !important;
+        text-align: left;
+        position: relative;
+    }
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+}

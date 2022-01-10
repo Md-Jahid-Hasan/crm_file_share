@@ -1,0 +1,1 @@
+web: gunicorn crm_file_project.wsgi

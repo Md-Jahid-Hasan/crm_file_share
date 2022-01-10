@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+:root {
+    --Darkturquoise: #0cc3ce;
+    --DarkturquoiseDeep: #0eacb4;
+    --Crimson: #ef2853;
+    --Black: #101010;
+    --Black-light: #1f2937;
+    --Black-gray: #4b5563;
+    --Gray: #6b7280;
+    --Light-Gray: #9ca3af;
+    --White: #ffffff;
+    --OpenSans: "Open Sans", sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: var(--OpenSans);
+    font-style: normal;
+    background-color: #fafafa;
+}
+
+
+/* Mobile devices */
+
+@media (max-width: 480px) {}
+
+
+/*  iPads, Tablets devices */
+
+@media (max-width: 768px) {}
+
+
+/*  Small screens, laptops devices */
+
+@media (max-width: 1024px) {}
+
+
+/*  Desktops, large screens devices */
+
+@media (max-width: 1200px) {}
