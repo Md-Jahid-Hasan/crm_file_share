@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'crm_file_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'crm_file_share',
         'USER': 'root',
         'PASSWORD': '',
