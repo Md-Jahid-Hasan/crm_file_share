@@ -1,5 +1,6 @@
-from datetime import datetime
+import datetime
 import stripe
+from django.utils import timezone
 from django.contrib import messages
 from django.http import Http404, HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied, ValidationError, BadRequest
@@ -61,7 +62,7 @@ class FileViewSets(viewsets.ModelViewSet):
             return Response({"Error": "You are the owner of this file, you dont need to buy it."},
                             status=status.HTTP_403_FORBIDDEN)
         try:
-            UserFilePermission.objects.get(user=self.request.user, file=file, expire_date__gte=datetime.now())
+            UserFilePermission.objects.get(user=self.request.user, file=file, expire_date__gte=datetime.datetime.now())
             return Response({"Error": "You already have access of this product, you don't need to buy it."},
                             status=status.HTTP_403_FORBIDDEN)
         except UserFilePermission.DoesNotExist:
@@ -106,7 +107,10 @@ class FileViewSets(viewsets.ModelViewSet):
         # message = f"Dear {request.user.name}, you buy a product"
         # send_mail('Thank You For purchasing', message, EMAIL_HOST, [request.user.email, ])
         perm = UserFilePermission.objects.create(user=request.user, file=file)
-        print(perm)
+        file.is_paid = True
+        file.expire_date = datetime.datetime.now() + datetime.timedelta(days=file.expire_days)
+        file.save()
+
         return Response({"Success": "File Share Successfully"}, status=status.HTTP_200_OK)
 
     @decorators.action(methods=['POST'], detail=True, url_path="check", permission_classes=[AllowAny])
@@ -141,6 +145,8 @@ class FileViewSets(viewsets.ModelViewSet):
             if not file.is_paid:
                 return Response({"Error": "Please pay for buy"}, status=status.HTTP_403_FORBIDDEN)
             else:
+                if file.expire_date <= timezone.now():
+                    return Response({"Error": "Please pay for buy"}, status=status.HTTP_403_FORBIDDEN)
                 return Response({"Error": "Please provide password"}, status=status.HTTP_401_UNAUTHORIZED)
         serializer = FileSerializer(file)
         return Response(serializer.data, status=status.HTTP_200_OK)

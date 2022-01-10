@@ -33,9 +33,8 @@ function App() {
                                 </LoginPrivateRoute>}/>
                             <Route exact path="/show/:fileId" element={<ShowFile/>}/>
                             <Route exact path="/payment/:fileId" element={
-                                <LoginPrivateRoute>
                                     <Payment/>
-                                </LoginPrivateRoute>}/>
+                              }/>
 
                             <Route exact path="/login" element={<LoginPage/>}/>
 
