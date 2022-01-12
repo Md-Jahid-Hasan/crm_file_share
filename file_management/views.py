@@ -38,10 +38,9 @@ class FileViewSets(viewsets.ModelViewSet):
     # )).first()      UserFilePermission.objects.filter(user=b, file=file, expire_date__gte=datetime.now())
 
     def get_object(self):
-        file_id = self.kwargs[self.lookup_field]
-
+        file_slug = self.kwargs[self.lookup_field]
         try:
-            file = File.objects.get(slug="12")
+            file = File.objects.get(slug=file_slug, user=self.request.user)
         except File.DoesNotExist:
             raise Http404
         return file
@@ -141,7 +140,7 @@ class FileViewSets(viewsets.ModelViewSet):
             file = File.objects.get(slug=slug)
         except File.DoesNotExist:
             return Response({"Error": "File Not Found"}, status=status.HTTP_404_NOT_FOUND)
-        if not file.is_public:
+        if not file.is_public and file.user != request.user:
             if not file.is_paid:
                 return Response({"Error": "Please pay for buy"}, status=status.HTTP_403_FORBIDDEN)
             else:
