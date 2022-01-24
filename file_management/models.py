@@ -68,5 +68,7 @@ def post_save_image(sender, instance, *args, **kwargs):
     """ Clean Old Image file """
     try:
         instance.content.delete(save=False)
+        instance.user.disk_space = instance.user.disk_space - instance.size
+        instance.user.save()
     except:
         pass

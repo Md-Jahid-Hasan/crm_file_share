@@ -107,8 +107,32 @@ const UploadFile = () => {
     const [file, selectFile] = useFileUpload();
     const fileUpload = () => {
         const price = document.getElementById('price-upload').value
+        if(price !== ""){
+            uploadFile(file.file, file.name, file.size, price, null)
+                .then(res => {
+                    let data
+                    if (res.status === 400) {
+                        data = res.message
+                    } else if (res.status === 200) {
+                        data = res.message
+                        setFiles(prevState => [...prevState, res.result])
+                    }
+                    setFileUploadShow(false)
+                    notificationDispatch({
+                        type: "ADD_ALERT",
+                        payload: data
+                    })
+                })
+        } else{
+            setErrorPlaceholder("Please, Provide a valid price")
+        }
+    }
+
+    const testFileUpload = () => {
+        const price = document.getElementById('price-upload').value
         console.log(price)
         selectFile({}, ({source, name, size, file}) => {
+
            if(price !== ""){
                 uploadFile(file, name, size, price, null)
                     .then(res => {
@@ -119,7 +143,7 @@ const UploadFile = () => {
                             data = res.message
                             setFiles(prevState => [...prevState, res.result])
                         }
-                        setFileUploadShow(false)
+                        //setFileUploadShow(false)
                         notificationDispatch({
                             type: "ADD_ALERT",
                             payload: data
@@ -134,7 +158,7 @@ const UploadFile = () => {
                         }
                   }
             );
-}
+        }
 
 
     const copyCoupon = (e, data) => {
@@ -143,7 +167,7 @@ const UploadFile = () => {
         alert(`Coupon code ${coupon} copied to your clipboard`);
     };
 
-    const createFolder = () => {
+    const upload_link = () => {
         handleClose()
         const name = document.getElementById("name").value
         const price = document.getElementById("price").value
@@ -186,8 +210,6 @@ const UploadFile = () => {
             })
     }
      const UpdateFile = (id, data) => {
-        //let new_user = users.map(u => u.pk === user.pk ? user : u)
-         console.log("Working")
         update_file(id, data)
             .then(res => {
                 let data;
@@ -195,7 +217,7 @@ const UploadFile = () => {
                     data = res.message
                 } else if (res.status === 200) {
                     data = {message: "Update Successfully", code: "success"}
-                    let new_files = file.map(f => f.pk === res.result.pk ? res.result : f)
+                    let new_files = files.map(f => f.id === res.result.id ? res.result : f)
                     setFiles(new_files)
                 }
                 notificationDispatch({
@@ -217,7 +239,7 @@ const UploadFile = () => {
                         let test = folders.filter(f => f.id !== deleteData.id)
                         setFolders(test)
                     } else {
-                        let test = files.filter(f => f.id !== deleteData.id)
+                        let test = files.filter(f => f.slug !== deleteData.id)
                         setFiles(test)
                     }
                 }
@@ -293,8 +315,8 @@ const UploadFile = () => {
                         <div className="upload-folder-btn">
 
                            {files.map(file =>
-                                <Link to={file.other_link === "null" && {pathname:`/show/${file.slug}/`}} target="_blank" rel="noopener noreferrer">
-                                    <a href={file.other_link !== "null" && file.other_link} target="_blank">
+                                <Link to={{pathname:`/show/${file.slug}/`}} target="_blank" rel="noopener noreferrer">
+                                    {/*<a href={file.other_link !== "null" && file.other_link} target="_blank">*/}
                                     <ContextMenuTrigger id="contextmenu" collect={() => {
                                           setFileDetails(file)
                                           setDeleteData({id: file.slug})
@@ -305,7 +327,8 @@ const UploadFile = () => {
                                                 <span className="content-name"> {file.name} </span>
                                             </div>
                                         </button>
-                                    </ContextMenuTrigger>     </a>
+                                    </ContextMenuTrigger>
+                                {/*</a>*/}
                                 </Link>
                            )}
 
@@ -318,7 +341,7 @@ const UploadFile = () => {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>New Folder</Modal.Title>
+                    <Modal.Title>Add Link</Modal.Title>
                 </Modal.Header>
                 <label htmlFor="name">Name</label>
                 <input className="folder-input" type="text" id="name" name="name" placeholder="Name"/>
@@ -328,7 +351,7 @@ const UploadFile = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={() => createFolder()}>
+                    <Button variant="primary" onClick={() => upload_link()}>
                         Create
                     </Button>
                 </Modal.Footer>
@@ -366,14 +389,14 @@ const UploadFile = () => {
             </Modal.Header>
             <input className="folder-input" type="text" id="price-upload" name="price" placeholder={errorPlaceholder}/>
                 <button onClick={() => {
-                    fileUpload()
+                    selectFile()
                 }}>Insert File</button>
             <Modal.Footer>
                 <Button variant="secondary" onClick={priceChangeHandleClose}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={renameFolder}>
-                    Update
+                <Button variant="primary" onClick={fileUpload}>
+                    Create
                 </Button>
             </Modal.Footer>
         </Modal>

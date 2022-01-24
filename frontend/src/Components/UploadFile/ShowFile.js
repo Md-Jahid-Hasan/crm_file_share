@@ -30,6 +30,7 @@ function ShowFile() {
             .then(res => {
                 console.log(res, "re")
                 if (res.status === 200) {
+                    console.log(res, "re")
                     if(res.data.other_link !== "null"){
                         setError(`This is a external link. We will redirecting you to this link. If not please follow this link - ${res.data.other_link}` )
                         setTimeout(() => {
@@ -68,8 +69,17 @@ function ShowFile() {
             .then(res => {
                 console.log(res.data.Success)
                 if(res.status === 200){
-                    setFile(res.data.Success)
-                    setFileType(res.data.Success.content.split(".").at(-1))
+                    if(res.data.Success.other_link !== "null"){
+                        console.log("enter link")
+                        setError(`This is a external link. We will redirecting you to this link. If not please follow this link - ${res.data.other_link}` )
+                        // setTimeout(() => {
+                        //     window.location.href = res.data.other_link
+                        // }, 3000)
+                    } else{
+                        console.log(res.data.Success.content.split(".").at(-1))
+                        setFile(res.data.Success)
+                        setFileType(res.data.Success.content.split(".").at(-1))
+                    }
                 }
             })
             .catch(err => {

@@ -84,7 +84,7 @@ const Payment = () => {
 
   useEffect(() => {
         axios
-            .get(`/api/file/user_file/${fileId}/`, getHeader())
+            .get(`/api/file/user_file/${fileId}/payment_availability/`, getHeader())
             .then(res => {
                 console.log(res)
                 if (res.status === 200) {setFile(res.data)}

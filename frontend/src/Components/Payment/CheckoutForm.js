@@ -71,8 +71,9 @@ const CheckoutForm = (props) => {
     );
     if(!error) {
         try {
-            const {id} = paymentMethod
-            await share_file(id, props.fileID)
+          console.log(paymentMethod)
+            const {id, billing_details} = paymentMethod
+            await share_file(id, props.fileID, billing_details)
             .then(res => {
                 if (res.status === 200) {
                     console.log(res.result)

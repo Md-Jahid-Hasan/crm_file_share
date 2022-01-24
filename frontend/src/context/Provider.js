@@ -23,7 +23,7 @@ const GlobalProvider = ({children}) => {
             type: "LOADING_ON",
         })
         axios
-            .get(`https://${window.location.host}/api/auth/me/`, getHeader())
+            .get(`http://${window.location.host}/api/auth/me/`, getHeader())
             .then(res => {
                 console.log(res)
                 authDispatch({

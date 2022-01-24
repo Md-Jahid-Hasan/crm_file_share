@@ -73,8 +73,9 @@ export const uploadFile = (source=null, name, size=0, price=-1, link=null) => {
             return data
         })
         .catch(error => {
-            console.log(error.response.data)
-            let data = {message: {message: error.response.data.detail, code: "danger"}, status: 400}
+            console.log(error.response.data.Size)
+            let data = {message: {message: error.response.data.Size || error.response.data.name || "There is some error",
+                    code: "danger"}, status: 400}
             return data
         })
 }
@@ -120,8 +121,8 @@ export const userSharedFile = () => {
         })
 }
 
-export const share_file = (id, file_id) => {
-    const body = JSON.stringify(id)
+export const share_file = (id, file_id, email) => {
+    const body = JSON.stringify({id, email})
     return axios
         .post(`/api/file/user_file/${file_id}/share/`,body, getHeader())
         .then(res => {
@@ -138,7 +139,6 @@ export const share_file = (id, file_id) => {
 
 export const update_file = (id, data) => {
     const body = JSON.stringify(data)
-    console.log(id)
     return axios
         .patch(`/api/file/user_file/${id}/`,body, getHeader())
         .then(res => {

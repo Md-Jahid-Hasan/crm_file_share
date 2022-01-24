@@ -6,14 +6,14 @@ from django.http import Http404, HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied, ValidationError, BadRequest
 from rest_framework import viewsets, generics, mixins, status, decorators, permissions
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 
 from crm_file_project.settings import EMAIL_HOST
 from .custom_permission import IsOwnerOrReadOnly
 from django.core.mail import send_mail
 
 from .models import File, UserFilePermission
-from .serializers import FileSerializer
+from .serializers import FileSerializer, UnpaidUserFileSerializer
 # acct_1K81nkDpBU84I2ZU
 
 
@@ -48,7 +48,7 @@ class FileViewSets(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
 
-    @decorators.action(methods=['POST'], detail=True, url_path="share")
+    @decorators.action(methods=['POST'], detail=True, url_path="share", permission_classes=[AllowAny])
     def share_file(self, request, slug=None):
         print(slug)
         stripe.api_key = "sk_test_51K84syADY9vArxrBzK3a5u6vNkXzr3pNkNaOJoZvauoCpaImKID9k9wkae0c0rWt7KXcjQUjQ2JL9vZDuCcXgI7y001iaSZY31"
@@ -60,16 +60,18 @@ class FileViewSets(viewsets.ModelViewSet):
         if file.user == request.user:
             return Response({"Error": "You are the owner of this file, you dont need to buy it."},
                             status=status.HTTP_403_FORBIDDEN)
-        try:
-            UserFilePermission.objects.get(user=self.request.user, file=file, expire_date__gte=datetime.datetime.now())
-            return Response({"Error": "You already have access of this product, you don't need to buy it."},
-                            status=status.HTTP_403_FORBIDDEN)
-        except UserFilePermission.DoesNotExist:
-            pass
+        if file.is_paid and file.expire_date >= timezone.now():
+            return Response({"Error": "Already Paid"}, status=status.HTTP_403_FORBIDDEN)
+        # try:
+        #     UserFilePermission.objects.get(user=self.request.user, file=file, expire_date__gte=datetime.datetime.now())
+        #     return Response({"Error": "You already have access of this product, you don't need to buy it."},
+        #                     status=status.HTTP_403_FORBIDDEN)
+        # except UserFilePermission.DoesNotExist:
+        #     pass
 
-        payment_id = request.data
-        print(payment_id)
-        email = request.user.email
+        print(request.data['id'])
+        payment_id = request.data['id']
+        email = request.data['email']['email']
         customer_data = stripe.Customer.list(email=email).data
 
         if len(customer_data) == 0:
@@ -105,7 +107,7 @@ class FileViewSets(viewsets.ModelViewSet):
         # )
         # message = f"Dear {request.user.name}, you buy a product"
         # send_mail('Thank You For purchasing', message, EMAIL_HOST, [request.user.email, ])
-        perm = UserFilePermission.objects.create(user=request.user, file=file)
+        # perm = UserFilePermission.objects.create(user=request.user, file=file)
         file.is_paid = True
         file.expire_date = datetime.datetime.now() + datetime.timedelta(days=file.expire_days)
         file.save()
@@ -150,16 +152,51 @@ class FileViewSets(viewsets.ModelViewSet):
         serializer = FileSerializer(file)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @decorators.action(methods=['GET'], detail=True, url_path="payment_availability", permission_classes=[AllowAny])
+    def payment_availability(self, request, slug):
+        try:
+            file = File.objects.get(slug=slug)
+        except File.DoesNotExist:
+            return Response({"Error": "File Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if file.is_paid and file.expire_date >= timezone.now():
+            return Response({"Error": "Already Paid"}, status=status.HTTP_403_FORBIDDEN)
+        elif file.is_public:
+            return Response({"Error": "This file is public dont need to pay"}, status=status.HTTP_403_FORBIDDEN)
+        elif file.user == request.user:
+            return Response({"Error": "You dont need to pay for this"}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = UnpaidUserFileSerializer(file)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UpdateFileViewSets(viewsets.ModelViewSet):
     serializer_class = FileSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     queryset = File.objects.all()
     lookup_field = 'slug'
 
     def get_object(self):
         file_id = self.kwargs[self.lookup_field]
+        try:
+            file = File.objects.get(slug=file_id)
+        except File.DoesNotExist:
+            raise Http404
 
+        if not file.is_public:
+            try:
+                File.objects.get(user=self.request.user, slug=file_id)
+            except File.DoesNotExist:
+                try:
+                    UserFilePermission.objects.get(user=self.request.user, file=file, expire_date__gte=datetime.now())
+                except UserFilePermission.DoesNotExist:
+                    self.serializer_class = UnpaidUserFileSerializer
+                except UserFilePermission.MultipleObjectsReturned:
+                    pass
+        return file
+
+    def get_objects(self):
+        file_id = self.kwargs[self.lookup_field]
         try:
             file = File.objects.get(slug=file_id)
         except File.DoesNotExist:
@@ -176,5 +213,4 @@ class UpdateFileViewSets(viewsets.ModelViewSet):
                     pass
                 except:
                     raise HttpResponseBadRequest
-
         return file
